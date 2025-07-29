@@ -37,6 +37,8 @@
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      height: 7%;
+
     }
     header h1 { margin: 0; font-size: 1.8rem; }
     nav a {
@@ -468,23 +470,112 @@
   color: var(--icon-color, #ffffff);
 }
 
+.menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.3rem;
+      cursor: pointer;
+      margin-left: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    #mainNav {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 0; /* no gap on large screens */
+  transition: all 0.3s ease;
+}
+
+/* Toggle for mobile show */
+#mainNav.hidden {
+  display: none;
+}
+
+#menuIcon {
+  transition: transform 0.3s ease;
+}
+
+.rotate-up {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+  #mainNav {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    position: absolute;       /* 👈 makes it float inside header */
+    top: 100%;                /* 👈 place it just below the header's first row */
+    left: 0;
+    width: 100%;
+    background-color: #4a90e2;   /* or your header background */
+  
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* optional drop shadow */
+    z-index: 100;
+    border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  }
+
+  #mainNav.show {
+    display: flex;
+  }
+
+  #mainNav a:first-child {
+  padding-top: 1rem; /* Add extra space at top */
+ 
+}
+
+#mainNav a:last-child {
+  padding-bottom: 1rem; /* Add extra space at bottom */
+    border-bottom: none;
+}
+
+#mainNav a {
+ width: 90%;
+  border-bottom: 1px solid white; /* Add line below each link */
+ 
+}
+
+
+}
   </style>
 </head>
 <body>
-  <header style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 2rem;">
+  <div style="position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+        z-index: 1001;
+">
+  <header style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 2rem; overflow:hidden;">
    
      <img src="logo.png" alt="MUSKANT Logo" style="height: 40px; object-fit: contain;" />
 
    
-    <nav>
+    <nav id="mainNav">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#testimonials">Testimonials</a>
       <a href="#contact">Contact</a>
     </nav>
+
+ <div style="display: flex; flex-direction: row;" >
     <button class="theme-toggle" id="themeToggle" onclick="toggleTheme(); toggleThemeLabel();">Dark Theme</button>
 
+     <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+          <i class="fas fa-chevron-down" id="menuIcon"></i>
+        </button>
+      </div>
+ 
   </header>
+  </div>
 
   <section class="hero">
     <div class="hero-text">
@@ -813,6 +904,18 @@
     darkModeEnabled = !darkModeEnabled;
     btn.textContent = darkModeEnabled ? 'Light Theme' : 'Dark Theme';
   }
+
+
+  const toggleButton = document.getElementById('menuToggle');
+  const nav = document.getElementById('mainNav');
+  const menuIcon = document.getElementById('menuIcon');
+
+  toggleButton.addEventListener('click', () => {
+    const isOpen = mainNav.style.display === 'flex';
+    nav.classList.toggle('show');
+    mainNav.style.display = isOpen ? 'none' : 'flex';
+     menuIcon.classList.toggle('rotate-up', !isOpen);
+  });
 
   </script>
 </body>
